@@ -1,0 +1,34 @@
+{
+  "name": "@0gfoundation/claude-marketplace",
+  "version": "0.1.0",
+  "description": "Official marketplace for 0G ecosystem plugins - Decentralized AI, Storage, and Data Availability",
+  "type": "module",
+  "claudePlugin": {
+    "type": "marketplace",
+    "pluginsDirectory": "plugins"
+  },
+  "keywords": [
+    "0g",
+    "0g-compute",
+    "0g-storage",
+    "0g-da",
+    "decentralized-ai",
+    "decentralized-storage",
+    "ai-inference",
+    "fine-tuning",
+    "claude-code",
+    "claude-marketplace"
+  ],
+  "author": "0G Foundation",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/0gfoundation/0g-claude-marketplace"
+  },
+  "bugs": {
+    "url": "https://github.com/0gfoundation/0g-claude-marketplace/issues"
+  },
+  "homepage": "https://github.com/0gfoundation/0g-claude-marketplace#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

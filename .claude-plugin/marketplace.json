@@ -1,0 +1,23 @@
+{
+  "name": "0g-marketplace",
+  "version": "0.1.0",
+  "description": "Official marketplace for 0G ecosystem plugins - Decentralized AI, Storage, and Data Availability",
+  "owner": {
+    "name": "0G Foundation",
+    "url": "https://github.com/0gfoundation"
+  },
+  "plugins": [
+    {
+      "name": "0g-compute",
+      "description": "Decentralized AI inference and fine-tuning platform",
+      "source": "./plugins/0g-compute",
+      "version": "0.1.0"
+    },
+    {
+      "name": "0g-storage",
+      "description": "High-performance decentralized storage network (Coming Soon)",
+      "source": "./plugins/0g-storage",
+      "version": "0.1.0"
+    }
+  ]
+}

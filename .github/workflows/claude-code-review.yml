@@ -1,0 +1,114 @@
+name: Claude Code Review
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  claude:
+    # Only allow repo members (admin/write/maintain permissions) to trigger
+    if: |
+      (
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+        (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+    steps:
+      - name: Check user permissions
+        id: check
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the username of the user who triggered the action
+          if [ "${{ github.event_name }}" == "issue_comment" ] || [ "${{ github.event_name }}" == "pull_request_review_comment" ]; then
+            ACTOR="${{ github.event.comment.user.login }}"
+          elif [ "${{ github.event_name }}" == "pull_request_review" ]; then
+            ACTOR="${{ github.event.review.user.login }}"
+          elif [ "${{ github.event_name }}" == "issues" ]; then
+            ACTOR="${{ github.event.issue.user.login }}"
+          else
+            ACTOR="${{ github.actor }}"
+          fi
+
+          echo "Checking permissions for: $ACTOR"
+
+          # Check user permission level
+          PERMISSION=$(gh api repos/${{ github.repository }}/collaborators/$ACTOR/permission --jq '.permission' 2>/dev/null || echo "none")
+          echo "Permission level: $PERMISSION"
+
+          # Only allow admin, write, maintain
+          if [[ "$PERMISSION" == "admin" || "$PERMISSION" == "write" || "$PERMISSION" == "maintain" ]]; then
+            echo "✅ Permission granted"
+          else
+            echo "❌ Permission denied - only repo members can use @claude"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          claude_args: |
+            --model claude-sonnet-4-5-20250929
+            --max-turns 40
+            --allowedTools "Bash(*)"
+            --system-prompt "You are a documentation and skill design expert for the 0G Skills project.
+
+            Project Background:
+            - This is a Claude Code skills collection for the 0G ecosystem
+            - Contains skills for 0G Compute (AI inference/fine-tuning)
+            - Future skills: 0G Storage, 0G DA, 0G Common utilities
+            - Built as a modular plugin following Claude Code best practices
+            - Primary content: Markdown documentation and skill definitions
+
+            Review Focus Areas:
+            1. **Skill Quality**: SKILL.md structure, clarity, examples
+            2. **Documentation**: Accuracy, completeness, user-friendliness
+            3. **Code Examples**: Correctness, security, best practices
+            4. **API Patterns**: Ensure examples match latest 0G SDK APIs
+            5. **Structure**: Modular design, extensibility for new skills
+            6. **Installation**: Clear instructions for plugin system
+
+            In reviews:
+            - Mark security issues (private keys in examples, insecure patterns) as [CRITICAL]
+            - Mark incorrect API usage or outdated patterns as [HIGH]
+            - Verify code examples are complete and runnable
+            - Check documentation links are valid
+            - Mark style/formatting issues as [nit]
+            - Give positive feedback for clear explanations
+
+            When fixing:
+            - Keep SKILL.md under 500 lines (move details to reference files)
+            - Ensure all code examples include error handling
+            - Use environment variables for sensitive data in examples
+            - Verify skill activates with correct keywords
+            - Keep README.md concise and focused
+            - Maintain structure for future skill additions"
+
+          settings: |
+            {
+              "env": {}
+            }

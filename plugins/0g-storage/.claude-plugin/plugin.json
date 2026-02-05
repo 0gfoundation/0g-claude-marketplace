@@ -1,0 +1,16 @@
+{
+  "name": "0g-storage",
+  "version": "0.1.0",
+  "description": "High-performance decentralized storage network (Coming Soon)",
+  "author": {
+    "name": "0G Foundation"
+  },
+  "homepage": "https://docs.0g.ai",
+  "repository": "https://github.com/0gfoundation/0g-claude-marketplace",
+  "keywords": [
+    "0g",
+    "0g-storage",
+    "decentralized-storage",
+    "storage-network"
+  ]
+}
