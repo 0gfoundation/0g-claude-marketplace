@@ -1,0 +1,17 @@
+{
+  "name": "0g-image",
+  "version": "0.1.0",
+  "description": "Text-to-image generation using 0G Compute z-image model",
+  "author": {
+    "name": "0G Foundation"
+  },
+  "homepage": "https://docs.0g.ai",
+  "repository": "https://github.com/0gfoundation/0g-claude-marketplace",
+  "keywords": [
+    "0g",
+    "z-image",
+    "text-to-image",
+    "image-generation",
+    "ai-image"
+  ]
+}
