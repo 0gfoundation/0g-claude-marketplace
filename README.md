@@ -13,6 +13,7 @@ This repository is a **marketplace** that hosts multiple independent plugins for
 │
 ├── plugins/                   # Individual plugins
 │   ├── 0g-compute/           # AI inference & fine-tuning
+│   ├── 0g-image/             # Text-to-image generation
 │   ├── 0g-storage/           # Decentralized storage (Coming Soon)
 │   └── ...                   # More plugins
 │
@@ -34,6 +35,19 @@ Decentralized AI inference and fine-tuning platform.
 
 **Status**: ✅ Active
 **Location**: `plugins/0g-compute/`
+
+### 🎨 0G Image (Active)
+
+Text-to-image generation using the **z-image** model.
+
+**Capabilities:**
+
+- **Image Generation**: Create images from text descriptions
+- **Dual Authentication**: API Key (simple) or SDK (wallet-based)
+- **High Quality**: 512x512 images at ~0.003 0G per image
+
+**Status**: ✅ Active
+**Location**: `plugins/0g-image/`
 
 ### 💾 0G Storage (Coming Soon)
 
@@ -133,6 +147,15 @@ Each plugin's skills activate automatically when you mention relevant topics.
 "Create a streaming chatbot with DeepSeek V3.1"
 "Show me how to fine-tune a model on 0G testnet"
 "What's the correct way to call processResponse()?"
+```
+
+### 0G Image Examples
+
+```text
+"Generate an image of a sunset over mountains"
+"How do I use z-image API with an API key?"
+"Show me how to generate images with 0G Compute SDK"
+"What's the cost of generating images with z-image?"
 ```
 
 ## Plugin Structure

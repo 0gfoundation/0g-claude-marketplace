@@ -14,6 +14,12 @@
       "version": "0.1.0"
     },
     {
+      "name": "0g-image",
+      "description": "Text-to-image generation using z-image model",
+      "source": "./plugins/0g-image",
+      "version": "0.1.0"
+    },
+    {
       "name": "0g-storage",
       "description": "High-performance decentralized storage network (Coming Soon)",
       "source": "./plugins/0g-storage",
